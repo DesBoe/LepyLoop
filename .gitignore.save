@@ -1,0 +1,10 @@
+# Ignoriere alle ._ Dateien
+._*
+
+# Andere Dateien und Ordner, die ignoriert werden sollen
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.DS_Store
