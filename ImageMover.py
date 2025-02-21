@@ -1,6 +1,7 @@
 import os
 import time
 import csv
+from tqdm import tqdm
 
 def find_image_files(parent_dir):
     image_extensions = ('.tif', '.tiff', '.jpg', '.jpeg', '.JPG', '.JPEG', '.png', '.PNG')
@@ -15,7 +16,7 @@ def find_image_files(parent_dir):
 def create_input(run_name, image_files):
     os.mkdir(os.path.join(run_name, 'images_input'))
     original_paths = {}
-    for image_file in image_files:
+    for image_file in tqdm(image_files, desc="Moving images", unit="file"):
         original_paths[os.path.basename(image_file)] = os.path.dirname(image_file)
         os.rename(image_file, os.path.join(run_name, 'images_input', os.path.basename(image_file)))
         time.sleep(0.001)
@@ -29,7 +30,7 @@ def process_images(run_name, input_dir, individuals_count):
     unpair_log = os.path.join(run_name, 'images_unpair_protokoll.csv')
     with open(unpair_log, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['file', 'reason'])
+        writer.writerow(['file', 'missing'])
 
         image_files = os.listdir(input_dir)
         image_files.sort()
@@ -52,6 +53,7 @@ def process_images(run_name, input_dir, individuals_count):
         pair_count = 0
         package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
         os.makedirs(package_dir, exist_ok=True)
+        print(f"Creating package {package_count:02d}")
 
         for base_name, (rgb_image, uv_image) in pairs.items():
             time.sleep(0.01)
@@ -61,6 +63,7 @@ def process_images(run_name, input_dir, individuals_count):
                     pair_count = 0
                     package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
                     os.makedirs(package_dir, exist_ok=True)
+                    print(f"Creating package {package_count:02d}")
 
                 os.rename(os.path.join(input_dir, rgb_image), os.path.join(package_dir, rgb_image))
                 os.rename(os.path.join(input_dir, uv_image), os.path.join(package_dir, uv_image))

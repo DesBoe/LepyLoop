@@ -3,7 +3,6 @@ from datetime import datetime
 import subprocess
 import platform
 from PIL import Image
-import img2unicode
 import Parser
 import Subfolders
 from ImageMover import *
