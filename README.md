@@ -1,9 +1,10 @@
-This script is a little help to run a huge pile of images with mothseg (https://github.com/DiKorsch/mothseg). 
-It expects a directory with  images. these can be of any type. It will look for all images and move them into an input folder. 
-For Lepy, we need paired images of the moths, so it detects individuals with only RGB or UV images and regards them to a unpaired folder. 
-The logfile shows an overview. Some moths might have additional photos, these will be listed as extra photos.
-Most importanly, it creates packages of a certain number of images. each package will be executed by mothseg. 
-This approach might avoid an memory error on your device. Each package is executed with mothseg and a results folder is created, as you would expect it from Lepy. 
+This script is a little help to run a huge pile of images with mothseg (https://github.com/tzlr-de/LEPY). 
+
+It will ask you for an input folder conatining the pictures of individuals. This can be a parent directory with subfolders. Within this directory, LepyLoop will look for all images and move them into an "input" folder. 
+For Lepy, you should provide paired images of moths. For that reason, individuals with only RGB or UV images are regarded as unpaired and will not be provided to LEPY. However, they can be analysed separately with LEPY. The logfile shows an overview of these unpaired images.
+
+Most importanly, LEPYLoop creates packages of a certain number of images. You can specify this number in the beginning. Each package will be executed by LEPY. 
+This approach might avoid an memory error on your device. Each package is executed with LEPY and a results folder is created, as you would expect it from LEPY. 
 At the end, all result folders are combined to one RESULT Folder and a combined stats output table is generated, both in csv and excel. All analysed images are then sorted back
 
 Tested on MACOS 15.1 and Python 3.12.0

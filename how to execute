@@ -1,9 +1,11 @@
 first:
-please read the instructions on https://github.com/DiKorsch/mothseg
+please read the instructions on https://github.com/tzlr-de/LEPY
 
 second:
-you should start your Anaconda environment with the installation of mothseg
-change the directory to the main.py script in the mothseg folder
-execute LepyLoop's LLmain.py by executing "python3 /path/to/LLmain.py
-  youll be asked for an input directoy. please state the directory that contains the images to be analysed
-  individual counts is a number, how many individiduals will be analysed in each Lepy iteration. If you experience issues on your machine, try a low number
+- you should start your Anaconda environment with the installation of LEPY
+- change the working directory to the main.py script in the LEPY folder
+- execute LepyLoop's LLmain.py by executing "python3 /path/to/LLmain.py"
+
+third:
+- LepyLoop will ask you for an input directoy. Please state the directory that contains the images to be analysed.
+- LepyLoop will ask for the number of individuals to be processed per run. We recommend 100. If you experience issues on your machine, try a low number
