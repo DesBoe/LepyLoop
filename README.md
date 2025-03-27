@@ -1,8 +1,12 @@
-This script is a little help to run a huge pile of images with LEPY (https://github.com/tzlr-de/LEPY). 
+This tool is a help to run a huge pile of images with LEPY (https://github.com/tzlr-de/LEPY). 
+For detailed information, please refer to Coorea-Carmona et al, 2025. Preprit @ https://doi.org/10.32942/X2WS78
 
-Note: LEPY can be executed completely without this assistant scripts. However, this scripts might help you to organize your data in an easy way.
+Note: 
+LEPY can be executed completely without this assistant scripts. However, this scripts might help you to organize your data in an easy way.
+
 
 LLmain :
+
 This script will ask you for an input folder conatining the pictures of individuals. This can be a parent directory with subfolders. Within this directory, LepyLoop will look for all images and move them into an "input" folder. 
 For Lepy, you should provide paired images of moths. For that reason, individuals with only RGB or UV images are regarded as unpaired and will not be provided to LEPY. However, they can be analysed separately with LEPY. The logfile shows an overview of these unpaired images.
 
@@ -12,6 +16,7 @@ At the end, all result folders are combined to one RESULT Folder and a combined 
 
 
 LLCheck :
+
 This script only checks for unpaired images of RGB + UV. you will need to provide a directory containing your images. Image names must follow a standardized naming scheme, e.g:
   EcEs-Lep-00001.tif
   EcEs-Lep-00001uv.tif
