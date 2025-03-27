@@ -1,3 +1,6 @@
+
+![Logo](https://github.com/user-attachments/assets/5ffc9806-6bd8-4a04-81a3-7e8fd5dec2c1)
+
 This tool is a help to run a huge pile of images with LEPY (https://github.com/tzlr-de/LEPY). 
 For detailed information, please refer to Correa-Carmona et al, 2025. Preprint @ https://doi.org/10.32942/X2WS78
 
