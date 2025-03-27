@@ -1,5 +1,5 @@
 This tool is a help to run a huge pile of images with LEPY (https://github.com/tzlr-de/LEPY). 
-For detailed information, please refer to Correa-Carmona et al, 2025. Preprit @ https://doi.org/10.32942/X2WS78
+For detailed information, please refer to Correa-Carmona et al, 2025. Preprint @ https://doi.org/10.32942/X2WS78
 
 Note: 
 LEPY can be executed completely without this assistant scripts. However, this scripts might help you to organize your data in an easy way.
