@@ -1,3 +1,6 @@
 ._*
 *.png
 icon*
+Logo*
+__pycache__
+.git
