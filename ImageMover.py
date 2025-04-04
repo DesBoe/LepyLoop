@@ -112,3 +112,4 @@ def restore_order(run_name, original_paths, input_dir):
         print(f"Warning: {unpair_dir} is not empty and has been retained.")
 
     print("Images restored to original locations")
+    
