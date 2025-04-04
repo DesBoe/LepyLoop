@@ -36,7 +36,7 @@ def process_images(run_name, input_dir, individuals_count):
         image_files.sort()
 
         pairs = {}
-        for image_file in image_files:
+        for image_file in tqdm(image_files, desc="Checking for paired images", unit="file"):
             time.sleep(0.05)
             if image_file.startswith('._'):
                 continue

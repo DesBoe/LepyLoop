@@ -72,11 +72,12 @@ if __name__ == "__main__":
 
     process_images(run_name,input_dir, individuals_count)
 
-    if proceed_check("All packages been created successfully. Continue with Lepy? y/n", default=False):
-        execute_lepy(run_name)
-        merge_content(run_name)
-        create_excel(run_name)     
-        restore_order(run_name, original_paths, input_dir)           
-        delete_folders(run_name)
+    print("All packages been created successfully. Continue with Lepy")
+    
+    execute_lepy(run_name)
+    merge_content(run_name)
+    create_excel(run_name)     
+    restore_order(run_name, original_paths, input_dir)           
+    delete_folders(run_name)
 
     print("All analysis done")

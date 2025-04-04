@@ -25,6 +25,7 @@ def execute_lepy(run_name):
                 command = ["python", "main.py", folder_path, "config.yml", "-y", "-f"]
             
             try:
+                print(f"\nExecuting: {folder}\n")
                 subprocess.run(command)  
                 time.sleep(1)
             except Exception as e:
