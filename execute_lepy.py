@@ -2,6 +2,7 @@ import os
 import subprocess
 import platform
 import time
+import csv
 
 def get_os():
     os_name = platform.system()
@@ -13,8 +14,16 @@ def get_os():
         print("Warning: Unknown OS\n the LepyLoop script may not work properly\n continue anyway")
         return "Unknown"
 
-def execute_lepy(run_name):
+
+def execute_lepy(run_name, path):
     os_name = get_os()
+    csv_file = f"{path}/execution_times.csv"
+
+    # Create or open the CSV file and write the header if it doesn't exist
+    if not os.path.exists(csv_file):
+        with open(csv_file, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Run Name", "Execution Time (seconds)"])
 
     for folder in os.listdir(run_name):
         folder_path = os.path.join(run_name, folder)
@@ -26,7 +35,16 @@ def execute_lepy(run_name):
             
             try:
                 print(f"\nExecuting: {folder}\n")
-                subprocess.run(command)  
+                start_time = time.time()  # Start timing
+                subprocess.run(command)
+                end_time = time.time()  # End timing
+                execution_time = end_time - start_time
+
+                # Write the execution time to the CSV file
+                with open(csv_file, mode='a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow([folder, execution_time])
+
                 time.sleep(1)
             except Exception as e:
                 print(f"Error: {e}")

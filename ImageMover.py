@@ -2,6 +2,7 @@ import os
 import time
 import csv
 from tqdm import tqdm
+from PIL import Image
 
 def find_image_files(parent_dir):
     image_extensions = ('.tif', '.tiff', '.jpg', '.jpeg', '.JPG', '.JPEG', '.png', '.PNG')
@@ -22,6 +23,28 @@ def create_input(run_name, image_files):
         time.sleep(0.001)
     print("Images moved to input folder")
     return original_paths
+
+def export_as_jpp(run_name):
+    jpg_dir = os.path.join(run_name, 'jpgs')
+    os.makedirs(jpg_dir, exist_ok=True)
+
+    input_dir = os.path.join(run_name, 'images_input')
+    # Nur Bilder, die nicht mit 'uv' enden, werden ausgewählt
+    image_files = [f for f in os.listdir(input_dir) if not f.startswith('._') and not f.lower().endswith('uv.tif')]
+
+    for image_file in tqdm(image_files, desc="Exporting images to JPG", unit="file"):
+        input_path = os.path.join(input_dir, image_file)
+        output_path = os.path.join(jpg_dir, os.path.splitext(image_file)[0] + '.jpg')
+
+        try:
+            with Image.open(input_path) as img:
+                rgb_image = img.convert('RGB')  # Konvertiere das Bild in RGB, falls es nicht bereits RGB ist
+                rgb_image.save(output_path, 'JPEG')
+        except Exception as e:
+            print(f"Error processing {image_file}: {e}")
+
+    print(f"All images exported to {jpg_dir}")
+
 
 def process_images(run_name, input_dir, individuals_count):
     unpair_dir = os.path.join(input_dir, '../images_unpair')

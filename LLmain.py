@@ -7,6 +7,7 @@ import Parser
 import Subfolders
 from ImageMover import *
 from Merger import *
+from execute_lepy import execute_lepy
 
 
 def get_os():
@@ -19,26 +20,6 @@ def get_os():
         print("Warning: Unknown OS\n the LepyLoop script may not work properly\n continue anyway")
         return "Unknown"
 
-
-def execute_lepy(run_name):
-    os_name = get_os()
-
-    for folder in os.listdir(run_name):
-        folder_path = os.path.join(run_name, folder)
-        if os.path.isdir(folder_path) and folder.startswith('package') and not folder.endswith('_result'):
-            if os_name == "Mac":
-                command = ["python3", "main.py", folder_path, "config.yml", "-y", "-f"]
-            elif os_name == "Windows":
-                command = ["python", "main.py", folder_path, "config.yml", "-y", "-f"]
-            
-            try:
-                subprocess.run(command)  
-                time.sleep(1)
-            except Exception as e:
-                print(f"Error: {e}")
-                print(f"Error: Lepy execution failed for {folder_path}")    
-            
-            print(f"{folder_path} has been processed")
     
 
 def proceed_check(message: str, default: bool = False) -> bool:
@@ -69,12 +50,13 @@ if __name__ == "__main__":
     image_files = find_image_files(args.parent_dir)
     print(f"Number of input images: {len(image_files)}")
     original_paths = create_input(run_name, image_files)
+    export_as_jpp(run_name)
 
     process_images(run_name,input_dir, individuals_count)
 
     print("All packages been created successfully. Continue with Lepy")
     
-    execute_lepy(run_name)
+    execute_lepy(run_name, path)
     merge_content(run_name)
     create_excel(run_name)     
     restore_order(run_name, original_paths, input_dir)           
