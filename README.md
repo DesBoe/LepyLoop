@@ -1,3 +1,4 @@
+![Logo](https://github.com/user-attachments/assets/10255357-c6aa-45f0-8b8f-2fdeae06cfae)
 This script is a little help to run a huge pile of images with Lepy (https://github.com/tzlr-de/LEPY). 
 
 It will ask you for an input folder conatining the pictures of individuals. This can be a parent directory with subfolders. Within this directory, LepyLoop will look for all images and move them into an "input" folder. 
