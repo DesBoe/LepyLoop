@@ -17,16 +17,17 @@ def merge_content(run_name):
                 "contours": "contours_txt",
                 "gbuv": "false_color_jpg",
                 "json": "stats_json",
-                "visualizations": "visualizations_jpg"
+                "visualisations": "visualisations_png"  # Korrekt benannt
             }
 
             for subfolder, target in subfolders.items():
                 source_path = os.path.join(source_folder, subfolder)
                 target_path = os.path.join(run_name, target)
+                os.makedirs(target_path, exist_ok=True)  # Zielordner erstellen, falls nicht vorhanden
                 if os.path.exists(source_path):
                     for file in os.listdir(source_path):
-                        if not file.startswith("._"):
-                            shutil.move(os.path.join(source_path, file), target_path)
+                        if not file.startswith("._") and file.endswith(".png"):  # Nur PNG-Dateien verschieben
+                            shutil.move(os.path.join(source_path, file), os.path.join(target_path, file))
 
             # Verschiebe errors.log und stats.csv
             for file_name in ["errors.log", "stats.csv"]:
@@ -34,6 +35,7 @@ def merge_content(run_name):
                 if os.path.exists(source_file):
                     new_file_name = f"{file_name.split('.')[0]}{run_number}.{file_name.split('.')[1]}"
                     target_path = os.path.join(run_name, f"{file_name.split('.')[0]}_log" if file_name == "errors.log" else "stats_per_run_csv")
+                    os.makedirs(target_path, exist_ok=True)  # Zielordner erstellen, falls nicht vorhanden
                     shutil.move(source_file, os.path.join(target_path, new_file_name))
 
 def delete_folders(run_name):
@@ -56,18 +58,21 @@ def create_excel(run_name):
     all_data = []
     columns = None
     for file in os.listdir(stats_folder):
-        if file.endswith(".csv"):
-            file_path = os.path.join(stats_folder, file)
-            try:
-                df = pd.read_csv(file_path, delimiter='\t')
-                if columns is None:
-                    columns = df.columns
-                elif not df.columns.equals(columns):
-                    print(f"Skipping {file_path} due to column mismatch")
-                    continue
-                all_data.append(df)
-            except Exception as e:
-                print(f"Error reading {file_path}: {e}")
+        if file.startswith("._") or not file.endswith(".csv"):
+            continue
+        file_path = os.path.join(stats_folder, file)
+        try:
+            df = pd.read_csv(file_path, delimiter='\t', encoding='utf-8')
+            if columns is None:
+                columns = df.columns
+            elif not df.columns.equals(columns):
+                print(f"Skipping {file_path} due to column mismatch")
+                continue
+            all_data.append(df)
+        except UnicodeDecodeError:
+            print(f"Error reading {file_path}: Non-UTF-8 encoding detected")
+        except Exception as e:
+            print(f"Error reading {file_path}: {e}")
     
     if all_data:
         combined_data = pd.concat(all_data, ignore_index=True)

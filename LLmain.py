@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-import subprocess
 import platform
 from PIL import Image
 import Parser
@@ -19,26 +18,13 @@ def get_os():
     else:
         print("Warning: Unknown OS\n the LepyLoop script may not work properly\n continue anyway")
         return "Unknown"
-
-    
-
-def proceed_check(message: str, default: bool = False) -> bool:
-    if default:
-        prompt = f"{message} [Y/n]: "
-    else:
-        prompt = f"{message} [y/N]: "
-    
-    user_input = input(prompt).lower()
-
-    if user_input in ('y', 'yes'):
-        return True
-    else:
-        return False
     
 
 if __name__ == "__main__":
     print("Enter the path of the of your input folder containing the pictures of individuals")
     path = input()
+    print("Do you want to analyse paired images: is one specimen photographed in RGB and UV light?\nplease enter\n 'RGB' if you only want to analyse RGB images\n 'UV' if you  want to analyse paires RGB and UV images")
+    mode = input()
     print("Enter the number of individuals you want to process per run. we recommend 100")
     individuals_count = int(input())
     args = Parser.arguments(path, individuals_count)
@@ -51,8 +37,16 @@ if __name__ == "__main__":
     print(f"Number of input images: {len(image_files)}")
     original_paths = create_input(run_name, image_files)
     export_as_jpp(run_name)
-
-    process_images(run_name,input_dir, individuals_count)
+    if mode.lower() == "rgb":
+        print("LepyLoop will be executed with RGB images only")
+        process_images_RGB(run_name,input_dir, individuals_count)
+ 
+    elif mode.lower() == "uv":
+        print("LepyLoop will be executed with paired RGB and UV images")
+        process_images_UV(run_name,input_dir, individuals_count)
+    else:
+        print("Invalid mode selected. Please enter 'RGB' or 'UV'.")
+        exit(1)    
 
     print("All packages been created successfully. Continue with Lepy")
     

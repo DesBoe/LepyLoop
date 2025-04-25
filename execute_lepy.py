@@ -17,7 +17,7 @@ def get_os():
 
 def execute_lepy(run_name, path):
     os_name = get_os()
-    csv_file = f"{path}/execution_times.csv"
+    csv_file = f"{run_name}/execution_times.csv"
 
     # Create or open the CSV file and write the header if it doesn't exist
     if not os.path.exists(csv_file):

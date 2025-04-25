@@ -5,7 +5,6 @@ def create_folder(run_name):
         'contours_txt',
         'false_color_jpg',
         'stats_json',
-        'visualizations_jpg',
         'errors_log',
         'stats_per_run_csv',
         'images_unpair',
