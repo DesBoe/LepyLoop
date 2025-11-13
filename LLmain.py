@@ -22,7 +22,7 @@ def get_os():
 
 if __name__ == "__main__":
     print("Enter the path of the of your input folder containing the pictures of individuals")
-    path = input()
+    path = input().strip().strip("'\"")
     print("Do you want to analyse paired images: is one specimen photographed in RGB and UV light?\nplease enter\n 'RGB' if you only want to analyse RGB images\n 'UV' if you  want to analyse paires RGB and UV images")
     mode = input()
     print("Enter the number of individuals you want to process per run. we recommend 100")

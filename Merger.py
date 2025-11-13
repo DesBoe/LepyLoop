@@ -4,8 +4,10 @@ import pandas as pd
 
 def merge_content(run_name):
     print("Merging content")
-    os.rename(os.path.join(run_name, "package01_result", "config.yml"), os.path.join(run_name, "configuration_Lepy.yml"))
-
+    try:
+        os.rename(os.path.join(run_name, "package01_result", "config.yml"), os.path.join(run_name, "configuration_Lepy.yml"))
+    except FileNotFoundError:
+        print("could not find merging files")
     # Suche nach allen Ordnern, die mit package anfangen und mit _result enden
     for folder in os.listdir(run_name):
         if folder.startswith("package") and folder.endswith("_result"):

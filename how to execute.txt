@@ -9,3 +9,12 @@ second:
 third:
 - LepyLoop will ask you for an input directoy. Please state the directory that contains the images to be analysed.
 - LepyLoop will ask for the number of individuals to be processed per run. We recommend 100. If you experience issues on your machine, try a low number
+
+
+
+Lepy online
+- 2025-09-26:
+- Terminal, not Anaconda!
+- cd /Volumes/Dennis_OTG/Python__Software_Tools/LEPY  
+- ./main.py /Volumes/Dennis_OTG/Studium_Bachelor/Hiwi/Arbeitsgruppe_Gunnar/TraitAnalyse/Test_JPG config.yml
+
