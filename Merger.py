@@ -3,11 +3,11 @@ import shutil
 import pandas as pd
 
 def merge_content(run_name):
-    print("Merging content")
+    print("##LL: Merging content")
     try:
         os.rename(os.path.join(run_name, "package01_result", "config.yml"), os.path.join(run_name, "configuration_Lepy.yml"))
     except FileNotFoundError:
-        print("could not find merging files")
+        print("##LL: could not find merging files")
     # Suche nach allen Ordnern, die mit package anfangen und mit _result enden
     for folder in os.listdir(run_name):
         if folder.startswith("package") and folder.endswith("_result"):
@@ -41,7 +41,7 @@ def merge_content(run_name):
                     shutil.move(source_file, os.path.join(target_path, new_file_name))
 
 def delete_folders(run_name):
-    print("delete package_folders")
+    print("##LL: delete package_folders")
     for folder in os.listdir(run_name):
         if folder.startswith("package"):
             folder_path = os.path.join(run_name, folder)
@@ -52,7 +52,7 @@ def delete_folders(run_name):
             shutil.rmtree(folder_path)
 
 def create_excel(run_name):
-    print("Creating combined CSV and Excel file")
+    print("##LL: Creating combined CSV and Excel file")
     stats_folder = os.path.join(run_name, "stats_per_run_csv")
     combined_csv_path = os.path.join(run_name, "stats_combined.csv")
     excel_path = os.path.join(run_name, "stats_combined.xlsx")
@@ -68,19 +68,19 @@ def create_excel(run_name):
             if columns is None:
                 columns = df.columns
             elif not df.columns.equals(columns):
-                print(f"Skipping {file_path} due to column mismatch")
+                print(f"##LL: Skipping {file_path} due to column mismatch")
                 continue
             all_data.append(df)
         except UnicodeDecodeError:
-            print(f"Error reading {file_path}: Non-UTF-8 encoding detected")
+            print(f"##LL: Error reading {file_path}: Non-UTF-8 encoding detected")
         except Exception as e:
-            print(f"Error reading {file_path}: {e}")
+            print(f"##LL: Error reading {file_path}: {e}")
     
     if all_data:
         combined_data = pd.concat(all_data, ignore_index=True)
         combined_data.to_csv(combined_csv_path, index=False, sep='\t')
         combined_data.to_excel(excel_path, index=False)
-        print(f"Combined CSV file created at {combined_csv_path}")
-        print(f"Excel file created at {excel_path}")
+        print(f"##LL: Combined CSV file created at {combined_csv_path}")
+        print(f"##LL: Excel file created at {excel_path}")
     else:
-        print("No valid CSV files found to combine.")
+        print("##LL: No valid CSV files found to combine.")

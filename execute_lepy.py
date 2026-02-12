@@ -11,11 +11,12 @@ def get_os():
     elif os_name == "Windows":
         return "Windows"
     else:
-        print("Warning: Unknown OS\n the LepyLoop script may not work properly\n continue anyway")
+        print("##LL:Warning: Unknown OS\n the LepyLoop script may not work properly\n continue anyway")
         return "Unknown"
 
 
-def execute_lepy(run_name, path):
+def execute_lepy(run_name, image_path, repoint_check = False, repoint_directory = None):
+    
     os_name = get_os()
     csv_file = f"{run_name}/execution_times.csv"
     
@@ -29,12 +30,29 @@ def execute_lepy(run_name, path):
         folder_path = os.path.join(run_name, folder)
         if os.path.isdir(folder_path) and folder.startswith('package') and not folder.endswith('_result'):
             if os_name == "Mac":
-                command = ["python3", "main.py", folder_path, "config.yml", "-y", "-f"]
+                if repoint_check and repoint_directory:
+                    try:
+                        command = ["python3", "main.py", folder_path, "config.yml", "-y", "-f", "-kp", repoint_directory]
+                    except Exception as e:
+                        print(f"##LL: Error on {folder_path}: {e}")
+                else:
+                    try:
+                        command = ["python3", "main.py", folder_path, "config.yml", "-y", "-f"]
+                    except Exception as e:
+                        print(f"##LL: Error on {folder_path}: {e}")
             elif os_name == "Windows":
-                command = ["python", "main.py", folder_path, "config.yml", "-y", "-f"]
-            
+                if repoint_check and repoint_directory:
+                    try:
+                        command = ["python", "main.py", folder_path, "config.yml", "-y", "-f", "-kp", repoint_directory]
+                    except Exception as e:
+                        print(f"##LL: Error on {folder_path}: {e}")
+                else:
+                    try:
+                        command = ["python", "main.py", folder_path, "config.yml", "-y", "-f"]
+                    except Exception as e:
+                        print(f"##LL: Error on {folder_path}: {e}")        
             try:
-                print(f"\nExecuting: {folder}\n")
+                print(f"\n##LL: Executing: {folder}\n")
                 start_time = time.time()  # Start timing
                 subprocess.run(command)
                 end_time = time.time()  # End timing
@@ -47,7 +65,7 @@ def execute_lepy(run_name, path):
 
                 time.sleep(1)
             except Exception as e:
-                print(f"Error: {e}")
-                print(f"Error: Lepy execution failed for {folder_path}")    
+                print(f"##LL: Error: {e}")
+                print(f"##LL: Error: Lepy execution failed for {folder_path}")    
             
-            print(f"{folder_path} has been processed")
+            print(f"##LL: {folder_path} has been processed")

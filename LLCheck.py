@@ -3,18 +3,18 @@ import os
 import csv
 from ImageMover import *
 
-print("This script helps you to check for unpaired images of RGB and UV photos in your database \nImage names must follow a uniform naming convention \nUV photos are expected to be indicated by the same name as RGB but extended with 'uv' \ne.g. \n EcEs-Lep-00001 \n EcEs-Lep-00001uv \n EcEs-Lep-00002  \n EcEs-Lep-00002uv \n EcEs-Lep-00003  \n EcEs-Lep-00003uv\n ... \n")
+print("##LL: This script helps you to check for unpaired images of RGB and UV photos in your database \nImage names must follow a uniform naming convention \nUV photos are expected to be indicated by the same name as RGB but extended with 'uv' \ne.g. \n EcEs-Lep-00001 \n EcEs-Lep-00001uv \n EcEs-Lep-00002  \n EcEs-Lep-00002uv \n EcEs-Lep-00003  \n EcEs-Lep-00003uv\n ... \n")
 
 def extract_number(filename):
     match = re.search(r'\d+', filename)
     return int(match.group()) if match else None
 
 if __name__ == "__main__":
-    print("Please enter the path of the of your input folder containing the pictures of individuals")
+    print("##LL: Please enter the path of the of your input folder containing the pictures of individuals")
     path_for_check = input()
     image_files = find_image_files(path_for_check)
 
-    print("Please enter the number of digits in the image names")
+    print("##LL: Please enter the number of digits in the image names")
     Numberlength = input()
     Numberlength = int(Numberlength)
     
@@ -23,9 +23,9 @@ if __name__ == "__main__":
     
     if numbers:
         highest_number = max(numbers)
-        print(f"The highest number found in the image filenames is: {highest_number}")
+        print(f"##LL: The highest number found in the image filenames is: {highest_number}")
     else:
-        print("No numbers found in the image filenames.")
+        print("##LL: No numbers found in the image filenames.")
         highest_number = 0
 
     csv_filename = os.path.join(path_for_check, 'image_check.csv')

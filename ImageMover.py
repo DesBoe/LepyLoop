@@ -17,11 +17,11 @@ def find_image_files(parent_dir):
 def create_input(run_name, image_files):
     os.mkdir(os.path.join(run_name, 'images_input'))
     original_paths = {}
-    for image_file in tqdm(image_files, desc="Moving images", unit="file"):
+    for image_file in tqdm(image_files, desc="##LL: Moving images", unit="file"):
         original_paths[os.path.basename(image_file)] = os.path.dirname(image_file)
         os.rename(image_file, os.path.join(run_name, 'images_input', os.path.basename(image_file)))
         time.sleep(0.001)
-    print("Images moved to input folder")
+    print("##LL: Images moved to input folder")
     return original_paths
 
 def export_as_jpp(run_name):
@@ -32,7 +32,7 @@ def export_as_jpp(run_name):
     # Nur Bilder, die nicht mit 'uv' enden, werden ausgewählt
     image_files = [f for f in os.listdir(input_dir) if not f.startswith('._') and not f.lower().endswith('uv.tif')]
 
-    for image_file in tqdm(image_files, desc="Exporting images to JPG", unit="file"):
+    for image_file in tqdm(image_files, desc="##LL: Exporting images to JPG", unit="file"):
         input_path = os.path.join(input_dir, image_file)
         output_path = os.path.join(jpg_dir, os.path.splitext(image_file)[0] + '.jpg')
 
@@ -41,84 +41,84 @@ def export_as_jpp(run_name):
                 rgb_image = img.convert('RGB')  # Konvertiere das Bild in RGB, falls es nicht bereits RGB ist
                 rgb_image.save(output_path, 'JPEG')
         except Exception as e:
-            print(f"Error processing {image_file}: {e}")
+            print(f"##LL: Error while moving: {image_file}: {e}")
 
-    print(f"All images exported to {jpg_dir}")
+    print(f"##LL: All images exported to {jpg_dir}")
 
 
 def process_images_UV(run_name, input_dir, individuals_count):
-     unpair_dir = os.path.join(input_dir, '../images_unpair')
-     os.makedirs(unpair_dir, exist_ok=True)
+    unpair_dir = os.path.join(input_dir, '../images_unpair')
+    os.makedirs(unpair_dir, exist_ok=True)
  
-     unpair_log = os.path.join(run_name, 'images_unpair_protokoll.csv')
-     with open(unpair_log, mode='w', newline='') as file:
-         writer = csv.writer(file)
-         writer.writerow(['file', 'reason'])
+    unpair_log = os.path.join(run_name, 'images_unpair_protokoll.csv')
+    with open(unpair_log, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['file', 'reason'])
  
-         image_files = os.listdir(input_dir)
-         image_files.sort()
+        image_files = os.listdir(input_dir)
+        image_files.sort()
  
-         pairs = {}
-         for image_file in image_files:
-             time.sleep(0.05)
-             if image_file.startswith('._'):
-                 continue
-             if 'uv' in image_file.rsplit('.', 1)[0]:
-                 base_name = image_file.rsplit('uv', 1)[0]
-                 pairs.setdefault(base_name, [None, None])[1] = image_file
-             else:
-                 base_name = image_file.rsplit('.', 1)[0]
-                 pairs.setdefault(base_name, [None, None])[0] = image_file
+        pairs = {}
+        for image_file in image_files:
+            time.sleep(0.05)
+            if image_file.startswith('._'):
+                continue
+            if 'uv' in image_file.rsplit('.', 1)[0]:
+                base_name = image_file.rsplit('uv', 1)[0]
+                pairs.setdefault(base_name, [None, None])[1] = image_file
+            else:
+                base_name = image_file.rsplit('.', 1)[0]
+                pairs.setdefault(base_name, [None, None])[0] = image_file
  
-         print("create packages for analyses with Lepy")        
+        print("##LL: create packages for analyses with Lepy")        
  
-         package_count = 1
-         pair_count = 0
-         package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
-         os.makedirs(package_dir, exist_ok=True)
+        package_count = 1
+        pair_count = 0
+        package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
+        os.makedirs(package_dir, exist_ok=True)
  
-         for base_name, (rgb_image, uv_image) in pairs.items():
-             time.sleep(0.01)
-             if rgb_image and uv_image:
-                 if pair_count >= individuals_count:
-                     package_count += 1
-                     pair_count = 0
-                     package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
-                     os.makedirs(package_dir, exist_ok=True)
+        for base_name, (rgb_image, uv_image) in pairs.items():
+            time.sleep(0.01)
+            if rgb_image and uv_image:
+                if pair_count >= individuals_count:
+                    package_count += 1
+                    pair_count = 0
+                    package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
+                    os.makedirs(package_dir, exist_ok=True)
  
-                 os.rename(os.path.join(input_dir, rgb_image), os.path.join(package_dir, rgb_image))
-                 os.rename(os.path.join(input_dir, uv_image), os.path.join(package_dir, uv_image))
-                 pair_count += 1
-             else:
-                 if rgb_image:
-                     os.rename(os.path.join(input_dir, rgb_image), os.path.join(unpair_dir, rgb_image))
-                     writer.writerow([rgb_image, 'UV'])
-                 elif uv_image:
-                     os.rename(os.path.join(input_dir, uv_image), os.path.join(unpair_dir, uv_image))
-                     writer.writerow([uv_image, 'RGB'])
+                os.rename(os.path.join(input_dir, rgb_image), os.path.join(package_dir, rgb_image))
+                os.rename(os.path.join(input_dir, uv_image), os.path.join(package_dir, uv_image))
+                pair_count += 1
+            else:
+                if rgb_image:
+                    os.rename(os.path.join(input_dir, rgb_image), os.path.join(unpair_dir, rgb_image))
+                    writer.writerow([rgb_image, 'UV'])
+                elif uv_image:
+                    os.rename(os.path.join(input_dir, uv_image), os.path.join(unpair_dir, uv_image))
+                    writer.writerow([uv_image, 'RGB'])
  
      # Überprüfen, ob das Verzeichnis input_dir leer ist
-     if not os.listdir(input_dir):
-         os.rmdir(input_dir)
-     else:
-         print(f"Warning: {input_dir} is not empty and has been retained.")
- 
-     print("Image processing completed")
+    if not os.listdir(input_dir):
+        os.rmdir(input_dir)
+    else:
+        print(f"##LL: Warning: {input_dir} is not empty and has been retained.")
+    
+    print("##LL: Image moving completed")
 
 
 def process_images_RGB(run_name, input_dir, individuals_count):
     image_files = os.listdir(input_dir)
     image_files.sort()
 
-    print("create packages for analyses with Lepy")        
+    print("##LL: create packages for analyses with Lepy")        
 
     package_count = 1
     image_count = 0
     package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
     os.makedirs(package_dir, exist_ok=True)
-    print(f"Creating package {package_count:02d}")
+    print(f"##LL: Creating package {package_count:02d}")
 
-    for image_file in tqdm(image_files, desc="Processing images", unit="file"):
+    for image_file in tqdm(image_files, desc="##LL: Moving images", unit="file"):
         time.sleep(0.01)
         if image_file.startswith('._'):
             continue
@@ -133,15 +133,15 @@ def process_images_RGB(run_name, input_dir, individuals_count):
             image_count = 0
             package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
             os.makedirs(package_dir, exist_ok=True)
-            print(f"Creating package {package_count:02d}")
+            print(f"##LL: Creating package {package_count:02d}")
 
     # Überprüfen, ob das Verzeichnis input_dir leer ist
     if not os.listdir(input_dir):
         os.rmdir(input_dir)
     else:
-        print(f"Warning: {input_dir} is not empty and has been retained.")
+        print(f"##LL: Warning: {input_dir} is not empty and has been retained.")
 
-    print("Image processing completed")
+    print("##LL: Image moving completed")
 
 
 def restore_order(run_name, original_paths, input_dir):
@@ -151,25 +151,31 @@ def restore_order(run_name, original_paths, input_dir):
             for file_name in os.listdir(folder_path):
                 file_path = os.path.join(folder_path, file_name)
                 if file_name in original_paths:
-                    os.rename(file_path, os.path.join(original_paths[file_name], file_name))
-                
+                    try:
+                        os.rename(file_path, os.path.join(original_paths[file_name], file_name))
+                    except FileNotFoundError:
+                        print(f"##LL: Warning: {file_path} not found, skipped.")
+                # ...existing code...
             if not os.listdir(folder_path):
                 os.rmdir(folder_path)
             else:
-                print(f"Warning: {folder_path} is not empty and has been retained.")
+                print(f"##LL: Warning: {folder_path} is not empty and has been retained.")
 
     unpair_dir = os.path.join(run_name, 'images_unpair')
     for file_name in os.listdir(unpair_dir):
         file_path = os.path.join(unpair_dir, file_name)
         if file_name in original_paths:
-            os.rename(file_path, os.path.join(original_paths[file_name], file_name))
+            try:
+                os.rename(file_path, os.path.join(original_paths[file_name], file_name))
+            except FileNotFoundError:
+                print(f"##LL: Warning: {file_path} not found, skipped.")
         time.sleep(0.01)
 
     if not os.listdir(unpair_dir):
         os.rmdir(unpair_dir)
         time.sleep(0.001)
     else:
-        print(f"Warning: {unpair_dir} is not empty and has been retained.")
+        print(f"##LL: Warning: {unpair_dir} is not empty and has been retained.")
 
-    print("Images restored to original locations")
+    print("##LL: Images restored to original locations")
     

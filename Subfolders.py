@@ -14,6 +14,6 @@ def create_folder(run_name):
         os.makedirs(os.path.join(run_name, folder), exist_ok=True)
     
     input_dir = os.path.join(run_name, 'images_input')
-    print('All subfolders created')
+    print('##LL:All subfolders created')
     
     return input_dir
