@@ -1,4 +1,4 @@
-# LEPYLOOP
+# LEPYLoop
 
 ![LEPYLOOP Logo](./Logo.png)
 
@@ -62,6 +62,11 @@ Before starting, LEPYLOOP will ask for the following settings:
 	- If "yes", you must provide the path to the JSON file containing the corrected POI data.
 
 ---
+## rePOInt
+- you can download rePOInt tool on GitHub:
+- https://github.com/DiKorsch/rePOInt
+---
+
 
 ### LEPY only
 
