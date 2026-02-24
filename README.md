@@ -2,7 +2,7 @@
 
 ![LEPYLOOP Logo](./Logo.png)
 
-**LEPYLOOP** is a tool to automate the analysis of large numbers of images with [LEPY](https://github.com/tzlr-de/LEPY). LEPY can also be used without LEPYLOOP.
+**LEPYLoop** is a tool to automate the analysis of large numbers of images with [LEPY](https://github.com/tzlr-de/LEPY). LEPY can also be used without LEPYLoop.
 
 ---
 
@@ -10,13 +10,13 @@
 
 Please read the instructions at [https://github.com/tzlr-de/LEPY](https://github.com/tzlr-de/LEPY).
 
-LEPY can process many images, but may hit hardware limits with very large datasets. LEPYLOOP is a workaround to overcome these limitations.
+LEPY can process many images, but may hit hardware limits with very large datasets. LEPYLoop is a workaround to overcome these limitations.
 
 ---
 
 ## Idea
 
-LEPYLOOP splits large image sets into small packages, which are then analyzed one after another by LEPY. After analysis, all images are restored to their original locations and the outputs are organized.
+LEPYLoop splits large image sets into small packages, which are then analyzed one after another by LEPY. After analysis, all images are restored to their original locations and the outputs are organized.
 
 ---
 
@@ -33,7 +33,7 @@ LEPYLOOP splits large image sets into small packages, which are then analyzed on
 
 1. Start your Anaconda environment with LEPY installed.
 2. Change to the directory containing LEPY's `main.py`.
-3. Start LEPYLOOP with:
+3. Start LEPYLoop with:
 
 	 ```bash
 	 python3 /path/to/LLmain.py
@@ -41,7 +41,7 @@ LEPYLOOP splits large image sets into small packages, which are then analyzed on
 
 ### Settings
 
-Before starting, LEPYLOOP will ask for the following settings:
+Before starting, LEPYLoop will ask for the following settings:
 
 - **Input directory:**
 	- The folder containing the images to be analyzed (subfolders are supported).
