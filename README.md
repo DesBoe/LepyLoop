@@ -6,11 +6,12 @@
 
 ---
 
-## Background
+**Background**
 
-Please read the instructions at [https://github.com/tzlr-de/LEPY](https://github.com/tzlr-de/LEPY).
+Please read the deocumentation of [LEPY](https://github.com/tzlr-de/LEPY).
 
 LEPY can process many images, but may hit hardware limits with very large datasets. LEPYLoop is a workaround to overcome these limitations.
+
 
 ---
 
@@ -63,20 +64,32 @@ Before starting, LEPYLoop will ask for the following settings:
 
 ---
 ## rePOInt
-- you can download rePOInt tool on GitHub:
-- https://github.com/DiKorsch/rePOInt
+You can download rePOInt tool on GitHub:
+[rePOInt tool (GitHub)](https://github.com/DiKorsch/rePOInt)
 ---
 
 
 ### LEPY only
-
-See [https://github.com/tzlr-de/LEPY](https://github.com/tzlr-de/LEPY)
+A full documentation on LEPY can be found at:
+[LEPY (GitHub)](https://github.com/tzlr-de/LEPY)
 
 ```bash
 ./main.py /path/to/images config.yml
 ```
 
 ---
+
+## References
+
+**Publication:**  
+LEPY was described by Correa-Carmona et al. (submitted). A preprint is available:  
+[Preprint (bioRxiv)](https://doi.org/10.32942/X2WS78)
+
+**Validation Data:**  
+[Validation Data (GitHub)](https://github.com/YennyCC/LEPY_Suplementary_Files.git)
+
+**LEPY Download:**  
+[LEPY Repository (GitHub)](https://github.com/tzlr-de/LEPY.git)
 
 ## Operating Systems
 
