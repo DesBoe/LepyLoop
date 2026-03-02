@@ -40,18 +40,17 @@ if __name__ == "__main__":
         repoint_path = None
     args = Parser.arguments(
         image_path=image_path,
-        parent_dir=os.path.dirname(image_path),
         individuals_count=individuals_count,
         repoint_check=repoint_check,
         repoint_path=repoint_path
     )
 
 
-    run_name = args.parent_dir + "_Lepy_Execution_" + datetime.now().strftime("%Y-%m-%d_%H-%M")
+    run_name = args.image_path + "_Lepy_Execution_" + datetime.now().strftime("%Y-%m-%d_%H-%M")
     os.mkdir(run_name)
     input_dir = Subfolders.create_folder(run_name)
 
-    image_files = find_image_files(args.parent_dir)
+    image_files = find_image_files(args.image_path)
     print(f"##LL: Number of input images: {len(image_files)}")
     original_paths = create_input(run_name, image_files)
     if export_jpg:
