@@ -82,13 +82,8 @@ To ensure correct scaling, set up your browser as follows (example for Chrome):
 1. **Close all Chrome windows.**
 2. **Adjust the Chrome shortcut on your desktop:**
 	- Right-click the shortcut → *Show more options* → *Properties*
-	- In the **Target** field, add:
-
-```
---force-device-scale-factor=1
-```
-
-	Example:
+	- In the **Target** field, add "--force-device-scale-factor=1"
+	- Example:
 
 ```
 C:\Program Files\Google\Chrome\Application\chrome.exe --force-device-scale-factor=1
