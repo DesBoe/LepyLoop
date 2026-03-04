@@ -64,8 +64,39 @@ Before starting, LEPYLoop will ask for the following settings:
 
 ---
 ## rePOInt
+### Download 
 You can download rePOInt tool on GitHub:
 [rePOInt tool (GitHub)](https://github.com/DiKorsch/rePOInt)
+
+
+### Tip: Troubleshooting Point Discrepancies
+
+**Problem:**
+
+If the points do not match between rePOInt and the LEPY visualization—especially along the Y-axis (vertical)—there may be a scaling issue. This often occurs if Windows display scaling (e.g., 175%) alters the pixel representation, while rePOInt still uses the original coordinates.
+
+**Solution:**
+
+To ensure correct scaling, set up your browser as follows (example for Chrome):
+
+1. **Close all Chrome windows.**
+2. **Adjust the Chrome shortcut on your desktop:**
+		- Right-click the shortcut → *Show more options* → *Properties*
+		- In the **Target** field, add:
+
+			```
+			--force-device-scale-factor=1
+			```
+
+			Example:
+
+			```
+			C:\Program Files\Google\Chrome\Application\chrome.exe --force-device-scale-factor=1
+			```
+3. **Start Chrome using this shortcut.**
+4. **Reload the animals in rePOInt and compare again with the LEPY visualization.**
+
+
 ---
 
 
