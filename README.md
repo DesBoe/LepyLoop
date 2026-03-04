@@ -81,18 +81,19 @@ To ensure correct scaling, set up your browser as follows (example for Chrome):
 
 1. **Close all Chrome windows.**
 2. **Adjust the Chrome shortcut on your desktop:**
-		- Right-click the shortcut → *Show more options* → *Properties*
-		- In the **Target** field, add:
+	- Right-click the shortcut → *Show more options* → *Properties*
+	- In the **Target** field, add:
 
-			```
-			--force-device-scale-factor=1
-			```
+```
+--force-device-scale-factor=1
+```
 
-			Example:
+	Example:
 
-			```
-			C:\Program Files\Google\Chrome\Application\chrome.exe --force-device-scale-factor=1
-			```
+```
+C:\Program Files\Google\Chrome\Application\chrome.exe --force-device-scale-factor=1
+```
+
 3. **Start Chrome using this shortcut.**
 4. **Reload the animals in rePOInt and compare again with the LEPY visualization.**
 
