@@ -8,7 +8,7 @@
 
 **Background**
 
-Please read the deocumentation of [LEPY](https://github.com/tzlr-de/LEPY).
+Please read the documentation of [LEPY](https://github.com/tzlr-de/LEPY).
 
 LEPY can process many images, but may hit hardware limits with very large datasets. LEPYLoop is a workaround to overcome these limitations.
 
