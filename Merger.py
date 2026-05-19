@@ -28,7 +28,7 @@ def merge_content(run_name):
                 os.makedirs(target_path, exist_ok=True)  # Zielordner erstellen, falls nicht vorhanden
                 if os.path.exists(source_path):
                     for file in os.listdir(source_path):
-                        if not file.startswith("._") and file.endswith(".png"):  # Nur PNG-Dateien verschieben
+                        if not file.startswith("._"):
                             shutil.move(os.path.join(source_path, file), os.path.join(target_path, file))
 
             # Verschiebe errors.log und stats.csv
