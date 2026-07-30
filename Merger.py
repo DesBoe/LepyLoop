@@ -84,3 +84,54 @@ def create_excel(run_name):
         print(f"##LL: Excel file created at {excel_path}")
     else:
         print("##LL: No valid CSV files found to combine.")
+    return excel_path
+
+def report_errors(excel_path):
+    print("##LL: check zeros from the Excel file")
+    columns_to_check = ['poi_dist_inner']
+    found_errors = {}
+    try:
+        df = pd.read_excel(excel_path)
+        for col in columns_to_check:
+            if col in df.columns:
+                error_rows = df[df[col] == 0]
+                if not error_rows.empty:
+                    found_errors[col] = error_rows['Code'].tolist()
+    except Exception as e:
+        print(f"##LL: Error reading Excel file {excel_path}: {e}")
+
+    report_path = os.path.join(os.path.dirname(excel_path), "morphological_errors_overview.txt")
+    with open(report_path, "w", encoding="utf-8") as report_file:
+        if found_errors:
+            report_file.write("Found errors\n")
+            report_file.write("===========\n")
+            for col, codes in found_errors.items():
+                report_file.write(f"{col}: {', '.join(map(str, codes))}\n")
+        else:
+            report_file.write("No errors found.\n")
+
+    print(f"##LL: Error report written to {report_path}")
+
+    morphological_errors_path = os.path.join(os.path.dirname(excel_path), "morphological_errors")
+    os.makedirs(morphological_errors_path, exist_ok=True)
+
+    for col, codes in found_errors.items():
+        for code in codes:
+            code_str = str(code)
+            visualisations_dir = os.path.join(os.path.dirname(excel_path), "visualisations_png")
+            if not os.path.exists(visualisations_dir):
+                continue
+
+            for file_name in os.listdir(visualisations_dir):
+                if file_name.startswith("._"):
+                    continue
+                if code_str in file_name:
+                    source_path = os.path.join(visualisations_dir, file_name)
+                    target_path = os.path.join(morphological_errors_path, file_name)
+                    if os.path.exists(source_path) and not os.path.exists(target_path):
+                        shutil.move(source_path, target_path)
+
+    print(f"##LL: Moved visualisations for error codes to {morphological_errors_path}")
+            
+
+    

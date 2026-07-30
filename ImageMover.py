@@ -46,10 +46,7 @@ def export_as_jpp(run_name):
     print(f"##LL: All images exported to {jpg_dir}")
 
 
-def process_images_UV(run_name, input_dir, individuals_count):
-    unpair_dir = os.path.join(input_dir, '../images_unpair')
-    os.makedirs(unpair_dir, exist_ok=True)
- 
+def process_images(run_name, input_dir, individuals_count): 
     unpair_log = os.path.join(run_name, 'images_unpair_protokoll.csv')
     with open(unpair_log, mode='w', newline='') as file:
         writer = csv.writer(file)
@@ -76,26 +73,31 @@ def process_images_UV(run_name, input_dir, individuals_count):
         pair_count = 0
         package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
         os.makedirs(package_dir, exist_ok=True)
+        print("##LL: Creating first package")
  
-        for base_name, (rgb_image, uv_image) in pairs.items():
+        for base_name, (rgb_image, uv_image) in tqdm(pairs.items(), desc="##LL: Creating packages", unit="pair"):
             time.sleep(0.01)
-            if rgb_image and uv_image:
-                if pair_count >= individuals_count:
-                    package_count += 1
-                    pair_count = 0
-                    package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
-                    os.makedirs(package_dir, exist_ok=True)
- 
-                os.rename(os.path.join(input_dir, rgb_image), os.path.join(package_dir, rgb_image))
-                os.rename(os.path.join(input_dir, uv_image), os.path.join(package_dir, uv_image))
-                pair_count += 1
-            else:
+            if rgb_image and not uv_image:
+                writer.writerow([rgb_image, 'UV image missing'])
+            if uv_image and not rgb_image:
+                writer.writerow([uv_image, 'RGB image missing'])            
+            if pair_count >= individuals_count:
+                package_count += 1
+                pair_count = 0
+                package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
+                os.makedirs(package_dir, exist_ok=True)
+                print(f"##LL: Creating package {package_count:02d}")
+            # Verschiebe die Bilder in das aktuelle Paket
+            try:
                 if rgb_image:
-                    os.rename(os.path.join(input_dir, rgb_image), os.path.join(unpair_dir, rgb_image))
-                    writer.writerow([rgb_image, 'UV'])
-                elif uv_image:
-                    os.rename(os.path.join(input_dir, uv_image), os.path.join(unpair_dir, uv_image))
-                    writer.writerow([uv_image, 'RGB'])
+                    os.rename(os.path.join(input_dir, rgb_image), os.path.join(package_dir, rgb_image))
+                if uv_image:   
+                    os.rename(os.path.join(input_dir, uv_image), os.path.join(package_dir, uv_image))
+            except Exception as e:
+                print(f"##LL: Error while moving: {rgb_image} or {uv_image}: {e}")
+            pair_count += 1
+
+
  
      # Überprüfen, ob das Verzeichnis input_dir leer ist
     if not os.listdir(input_dir):
@@ -105,43 +107,6 @@ def process_images_UV(run_name, input_dir, individuals_count):
     
     print("##LL: Image moving completed")
 
-
-def process_images_RGB(run_name, input_dir, individuals_count):
-    image_files = os.listdir(input_dir)
-    image_files.sort()
-
-    print("##LL: create packages for analyses with Lepy")        
-
-    package_count = 1
-    image_count = 0
-    package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
-    os.makedirs(package_dir, exist_ok=True)
-    print(f"##LL: Creating package {package_count:02d}")
-
-    for image_file in tqdm(image_files, desc="##LL: Moving images", unit="file"):
-        time.sleep(0.01)
-        if image_file.startswith('._'):
-            continue
-
-        # Verschiebe das Bild in das aktuelle Paket
-        os.rename(os.path.join(input_dir, image_file), os.path.join(package_dir, image_file))
-        image_count += 1
-
-        # Wenn die maximale Anzahl von Bildern pro Paket erreicht ist, erstelle ein neues Paket
-        if image_count >= individuals_count:
-            package_count += 1
-            image_count = 0
-            package_dir = os.path.join(input_dir, f'../package{package_count:02d}')
-            os.makedirs(package_dir, exist_ok=True)
-            print(f"##LL: Creating package {package_count:02d}")
-
-    # Überprüfen, ob das Verzeichnis input_dir leer ist
-    if not os.listdir(input_dir):
-        os.rmdir(input_dir)
-    else:
-        print(f"##LL: Warning: {input_dir} is not empty and has been retained.")
-
-    print("##LL: Image moving completed")
 
 
 def restore_order(run_name, original_paths, input_dir):
@@ -161,9 +126,9 @@ def restore_order(run_name, original_paths, input_dir):
             else:
                 print(f"##LL: Warning: {folder_path} is not empty and has been retained.")
 
-    unpair_dir = os.path.join(run_name, 'images_unpair')
-    for file_name in os.listdir(unpair_dir):
-        file_path = os.path.join(unpair_dir, file_name)
+    images_input = os.path.join(run_name, 'images_input')
+    for file_name in os.listdir(images_input):
+        file_path = os.path.join(images_input, file_name)
         if file_name in original_paths:
             try:
                 os.rename(file_path, os.path.join(original_paths[file_name], file_name))
@@ -171,11 +136,11 @@ def restore_order(run_name, original_paths, input_dir):
                 print(f"##LL: Warning: {file_path} not found, skipped.")
         time.sleep(0.01)
 
-    if not os.listdir(unpair_dir):
-        os.rmdir(unpair_dir)
+    if not os.listdir(images_input):
+        os.rmdir(images_input)
         time.sleep(0.001)
     else:
-        print(f"##LL: Warning: {unpair_dir} is not empty and has been retained.")
+        print(f"##LL: Warning: {images_input} is not empty and has been retained.")
 
     print("##LL: Images restored to original locations")
     
