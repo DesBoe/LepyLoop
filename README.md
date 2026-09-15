@@ -109,8 +109,8 @@ A full documentation on LEPY can be found at:
 ## References
 
 **Publication:**  
-LEPY was described by Correa-Carmona et al. (submitted). A preprint is available:  
-[Preprint (bioRxiv)](https://doi.org/10.32942/X2WS78)
+LEPY was described by Correa-Carmona et al. in 2026 in Ecological Informatics. 
+[Open Access](https://doi.org/10.1016/j.ecoinf.2026.103680)
 
 **Validation Data:**  
 [Validation Data (GitHub)](https://github.com/YennyCC/LEPY_Suplementary_Files.git)
