@@ -15,13 +15,36 @@ def find_image_files(parent_dir):
     return image_files
 
 def create_input(run_name, image_files):
-    os.mkdir(os.path.join(run_name, 'images_input'))
+    input_dir = os.path.join(run_name, 'images_input')
+    os.mkdir(input_dir)
+
     original_paths = {}
+
     for image_file in tqdm(image_files, desc="##LL: Moving images", unit="file"):
-        original_paths[os.path.basename(image_file)] = os.path.dirname(image_file)
-        os.rename(image_file, os.path.join(run_name, 'images_input', os.path.basename(image_file)))
+        filename = os.path.basename(image_file)
+        original_dir = os.path.dirname(image_file)
+
+        original_paths[filename] = original_dir
+
+        os.rename(
+            image_file,
+            os.path.join(input_dir, filename)
+        )
         time.sleep(0.001)
+
+    # Save original paths as CSV
+    csv_path = os.path.join(run_name, 'original_paths.csv')
+
+    with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['filename', 'original_path'])
+
+        for filename, original_path in original_paths.items():
+            writer.writerow([filename, original_path])
+
     print("##LL: Images moved to input folder")
+    print(f"##LL: Original paths saved to {csv_path}")
+
     return original_paths
 
 def export_as_jpp(run_name):
@@ -58,13 +81,28 @@ def process_images(run_name, input_dir, individuals_count):
         pairs = {}
         for image_file in image_files:
             time.sleep(0.05)
+
             if image_file.startswith('._'):
                 continue
-            if 'uv' in image_file.rsplit('.', 1)[0]:
-                base_name = image_file.rsplit('uv', 1)[0]
+
+            stem = image_file.rsplit('.', 1)[0]
+
+            if stem.endswith('-uv'):
+                # z.B. image_u_m-uv.tif
+                base_name = stem[:-3]
+
                 pairs.setdefault(base_name, [None, None])[1] = image_file
+
+            elif stem.endswith('uv'):
+                # z.B. imageuv.tif
+                base_name = stem[:-2]
+
+                pairs.setdefault(base_name, [None, None])[1] = image_file
+
             else:
-                base_name = image_file.rsplit('.', 1)[0]
+                # normales RGB-Bild
+                base_name = stem
+
                 pairs.setdefault(base_name, [None, None])[0] = image_file
  
         print("##LL: create packages for analyses with Lepy")        
